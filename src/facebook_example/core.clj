@@ -19,7 +19,8 @@
             [clojure.future :refer :all]
             [fb-messenger.send :as facebook]
             [facebook-example.incoming :refer [on-quick-reply on-attachments
-                                               on-message on-postback]]))
+                                               on-message on-postback]]
+            [google-cloud.oauth :as oauth]))
 
 (fb-messenger.send/set-page-access-token! (env :page-access-token))
 (fb-messenger.auth/set-token! (env :verify-token))
@@ -123,5 +124,3 @@
 
 (defn -main [& args]
   (jetty/run-jetty app {:port (read-string (or (env :port) "3000"))}))
-
-
