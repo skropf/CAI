@@ -1,1 +1,1 @@
-web: java -cp target/facebook-example-standalone.jar clojure.main -m facebook-example.core
+web: java -cp target/cai-standalone.jar clojure.main -m cai.core
