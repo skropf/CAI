@@ -1,6 +1,9 @@
 (ns cai.outgoing
   (:gen-class)
-  (:require [fb-messenger.templates :as templates]))
+  (:require [fb-messenger.templates :as templates]
+            [cai.message :as message]))
+
+
 
 ; You can use three kind of replies: actions, messages and delay.
 
@@ -28,11 +31,12 @@
   [{:message (templates/image-message "https://upload.wikimedia.org/wikipedia/commons/e/ef/Tunturisopuli_Lemmus_Lemmus.jpg")}])
 
 (defn echo [message-text]
-  [{:message (templates/text-message message-text)}])
+  (message/send message-text))
 
 (defn welcome []
   [{:action "typing_on"}
    {:delay 3000}
+   {:message (message/send "Welcome, fellow lemming =)")}
    {:message (templates/text-message "Welcome, fellow lemming =)")}
    {:message (templates/image-message "https://upload.wikimedia.org/wikipedia/commons/e/ef/Tunturisopuli_Lemmus_Lemmus.jpg")}
    {:delay 1000}

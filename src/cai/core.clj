@@ -2,6 +2,7 @@
   (:gen-class)
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
+            [cai.message :as message]
             [ring.middleware.defaults :refer :all]
             [ring.middleware.json :refer [wrap-json-params]]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
@@ -116,6 +117,9 @@
       (if result
         result
         {:status 403}))))
+
+(def outmessage)
+
 
 (def app
   (-> (wrap-defaults fb-routes api-defaults)
