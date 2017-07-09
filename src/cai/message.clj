@@ -3,4 +3,4 @@
   (:require [fb-messenger.templates :as templates]))
 
 (defn send [message-text]
-  [{:message (templates/text-message message-text)}])
+  (templates/text-message message-text))
