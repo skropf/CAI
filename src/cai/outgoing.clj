@@ -36,8 +36,8 @@
 (defn welcome []
   [{:action "typing_on"}
    {:delay 3000}
-   {:message (message/send "Welcome, fellow lemming =)")}
    {:message (templates/text-message "Welcome, fellow lemming =)")}
+   {:message (message/send "Welcome, fellow lemming =)")}   
    {:message (templates/image-message "https://upload.wikimedia.org/wikipedia/commons/e/ef/Tunturisopuli_Lemmus_Lemmus.jpg")}
    {:delay 1000}
    {:message (templates/button-template "Want to see the work of previous lemmings survivors?"
