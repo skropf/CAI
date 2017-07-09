@@ -29,7 +29,7 @@
       (-> (json/read-str body :key-fn keyword)
           :responses
           first)
-      (do (println "ERROR: Call to Vision API failed. Maybe check your vision-key in profiles.clj?")
+      (do (println "ERROR: Call to Vision API failed. Maybe check your key-file?")
           (println body))))
 
 
