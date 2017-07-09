@@ -6,8 +6,6 @@
             [environ.core :refer [env]]))
 (import (org.apache.commons.codec.binary Base64))
 
-(def SPEECH-KEY (env :google-application-credentials))
-
 
 (defn download-audio [url]
   (let [response (http/get url {:as :byte-array})]
@@ -20,7 +18,7 @@
 (defn call-speech-api [b64-audio]
     (as-> b64-audio data
           @(http/post "https://speech.googleapis.com/v1/speech:recognize"
-                     {  :query-params {"key" SPEECH-KEY}
+                     {  :query-params {"key" (env :google-application-credentials)}
                         :headers {"Content-Type" "application/json"}
                         :body (json/write-str (request-body data))
                         :insecure? true})))
