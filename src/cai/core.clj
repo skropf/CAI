@@ -119,10 +119,6 @@
         result
         {:status 403}))))
 
-<<<<<<< HEAD
-
-=======
->>>>>>> c495d8d1ac0f6141bb0e4d5ae5234d7829659615
 (def app
   (-> (wrap-defaults fb-routes api-defaults)
       (wrap-keyword-params)
