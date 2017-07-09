@@ -20,7 +20,8 @@
             [fb-messenger.send :as facebook]
             [cai.incoming :refer [on-quick-reply on-attachments
                                                on-message on-postback]]
-            [google-cloud.oauth :as oauth]))
+            [cai.outgoing :as out]))
+            ;;[google-cloud :as google]))
 
 (fb-messenger.send/set-page-access-token! (env :page-access-token))
 (fb-messenger.auth/set-token! (env :verify-token))
@@ -37,6 +38,7 @@
 (spec/def ::reply (spec/or :message-reply ::message-reply
                            :action-reply ::action-reply
                            :delay-reply ::delay-reply))
+
 
 ; MATCH USER INPUT
 (defn process-event [event]
@@ -117,6 +119,10 @@
         result
         {:status 403}))))
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> c495d8d1ac0f6141bb0e4d5ae5234d7829659615
 (def app
   (-> (wrap-defaults fb-routes api-defaults)
       (wrap-keyword-params)
