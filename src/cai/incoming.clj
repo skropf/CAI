@@ -1,6 +1,8 @@
 (ns cai.incoming
   (:gen-class)
-  (:require [cai.outgoing :as outgoing]))
+  (:require [cai.outgoing :as outgoing]
+            [fb-messenger.templates :as templates]
+            [cai.speech-api :as speech-api]))
 
 ; Uncomment if you want to set a persistent menu in your bot:
 ; (facebook/set-messenger-profile
@@ -67,4 +69,7 @@
         recipient-id (get-in event [:recipient :id])
         time-of-message (get-in event [:timestamp])
         attachments (get-in event [:message :attachments])]
-    (outgoing/thank-for-attachment)))
+    (doseq [attachment attachments]
+      (cond
+        (= (get-in attachment [:type]) "audio") (speech-api/analyze (get-in attachment [:payload :url]))
+        (= (get-in attachment [:type]) "image") (println "image")))))
