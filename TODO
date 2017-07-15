@@ -1,0 +1,5 @@
++facebook mp4(aac) to wav(linear16) conversion!! (PRIOTITY)
++implementing google assistant (https://developers.google.com/assistant/sdk/reference/rpc/)
+ -no need for audio-text conversions (assistant takes audio directly [LINEAR16,FLAC])
++adding text support (same as audio)
+?images to deepthought and return

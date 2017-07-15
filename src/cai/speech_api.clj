@@ -3,9 +3,10 @@
   (:require [clojure.string :as s]
             [org.httpkit.client :as http]
             [clojure.data.json :as json]
-            [environ.core :refer [env]]))
+            [environ.core :refer [env]]
+            [clojure.java.shell :refer [sh]]))
 (import (org.apache.commons.codec.binary Base64))
-
+(use 'clj-audio.core)
 
 (defn download-audio [url]
   (let [response (http/get url {:as :byte-array})]
@@ -39,11 +40,12 @@
 
 
 (defn analyze [url]
-  (-> (download-audio url)
+  (-> (->stream (download-audio url) decode (write "~/test.wav")))
+  (-> (println (download-audio url))
       audio-to-b64
       call-speech-api
       handle-speech-response))
 
 ;;IMPORTANT: code works so far, but response empty. need to convert audio from
-;;mp4(aac) to valid format!!!
+;;mp4(aac) to valid format(best linear16(wav))!!!
 ;;(see https://cloud.google.com/speech/reference/rest/v1/RecognitionConfig#AudioEncoding)
