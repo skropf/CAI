@@ -1,4 +1,4 @@
-# CAI FBot (Conversational Audio Interface Facebook Bot)
+# CAI (Conversational Audio Interface)
 
 Still in heavy development!
 
