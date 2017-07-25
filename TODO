@@ -1,5 +1,6 @@
-+facebook mp4(aac) to wav(linear16) conversion!! (PRIOTITY)
++tts
++custom response functions not working?!
 +implementing google assistant (https://developers.google.com/assistant/sdk/reference/rpc/)
- -no need for audio-text conversions (assistant takes audio directly [LINEAR16,FLAC])
+ -clojure grpc implemetation
 +adding text support (same as audio)
 ?images to deepthought and return
