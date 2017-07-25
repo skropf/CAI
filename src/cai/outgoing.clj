@@ -1,7 +1,7 @@
 (ns cai.outgoing
   (:gen-class)
   (:require [fb-messenger.templates :as templates]
-            [cai.message :as message]))
+            [cai.speech-api :as speech-api]))
 
 
 
@@ -27,17 +27,17 @@
 ;  {:delay 2000}
 ;  {:message (template/text-message "Alright!")}]
 
-(defn some-image []
-  [{:message (templates/image-message "https://upload.wikimedia.org/wikipedia/commons/e/ef/Tunturisopuli_Lemmus_Lemmus.jpg")}])
+(defn send-image [url]
+  [{:message (templates/image-message url)}])
 
 (defn echo [message-text]
-  (message/send message-text))
+  (println (str "###ECHO: " message-text))
+  [{:message (templates/text-message message-text)}])
 
 (defn welcome []
   [{:action "typing_on"}
    {:delay 3000}
    {:message (templates/text-message "Welcome, fellow lemming =)")}
-   {:message (message/send "Welcome, fellow lemming =)")}   
    {:message (templates/image-message "https://upload.wikimedia.org/wikipedia/commons/e/ef/Tunturisopuli_Lemmus_Lemmus.jpg")}
    {:delay 1000}
    {:message (templates/button-template "Want to see the work of previous lemmings survivors?"
@@ -106,3 +106,9 @@
 (defn send-lemmings-bots []
   [{:message (templates/text-message "Let me show you some examples of what your predecessors created:")}
    {:message (templates/generic-template (shuffle lemmings-bots))}])
+
+(defn reply-to-audio [url]
+  [{:action "typing_on"}]
+  (let [reply (speech-api/analyze url)]
+    (println (str "###ANALYZED AUDIO: " reply))
+    [{:message (templates/text-message reply)}]))

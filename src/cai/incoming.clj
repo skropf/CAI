@@ -1,8 +1,7 @@
 (ns cai.incoming
   (:gen-class)
   (:require [cai.outgoing :as outgoing]
-            [fb-messenger.templates :as templates]
-            [cai.speech-api :as speech-api]))
+            [fb-messenger.templates :as templates]))
 
 ; Uncomment if you want to set a persistent menu in your bot:
 ; (facebook/set-messenger-profile
@@ -27,7 +26,7 @@
     (cond
       (re-matches #"(?i)hi|hello|hallo" message-text) (outgoing/welcome)
       (re-matches #"(?i)help" message-text) (outgoing/help)
-      (re-matches #"(?i)image" message-text) (outgoing/some-image)
+      (re-matches #"(?i)image" message-text) (outgoing/send-image "https://hexnet.org/files/images/hexnet/content_metatrons-cube.png")
       (re-matches #"(?i)bots" message-text) (outgoing/send-lemmings-bots)
       ; If no rules apply echo the user's message-text input
       :else (outgoing/echo message-text))))
@@ -71,5 +70,6 @@
         attachments (get-in event [:message :attachments])]
     (doseq [attachment attachments]
       (cond
-        (= (get-in attachment [:type]) "audio") (speech-api/analyze (get-in attachment [:payload :url]))
-        (= (get-in attachment [:type]) "image") (println "image")))))
+        (= (get-in attachment [:type]) "audio") (outgoing/reply-to-audio (get-in attachment [:payload :url]))
+        (= (get-in attachment [:type]) "image") (outgoing/send-image (get-in attachment [:payload :url]))
+        (= (get-in attachment [:type]) "video") (outgoing/echo (get-in attachment [:payload :url]))))))

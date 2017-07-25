@@ -1,51 +1,41 @@
 (ns cai.speech-api
   (:gen-class)
-  (:require [clojure.string :as s]
+  (:require [clojure.string :as str]
             [org.httpkit.client :as http]
             [clojure.data.json :as json]
             [environ.core :refer [env]]
-            [clojure.java.shell :refer [sh]]))
+            [cai.ffmpeg :as ffmpeg]
+            [clojure.java.io :as io]
+            [byte-streams :as bs]))
 (import (org.apache.commons.codec.binary Base64))
-(use 'clj-audio.core)
 
-(defn download-audio [url]
-  (let [response (http/get url {:as :byte-array})]
-    (:body @response)))
+(defn audio-to-b64 [audio-byte-array]
+  (String. (Base64/encodeBase64 audio-byte-array)))
 
-(defn audio-to-b64 [audio]
-  (String. (Base64/encodeBase64 audio)))
-
-(defn request-body [b64audio]
-  {"config" {"encoding" "AMR"
-             "sampleRateHertz" 8000
+(defn request-body [audio-base64]
+  {"config" {"encoding" "LINEAR16"
+             "sampleRateHertz" 32000
              "languageCode" "en-US"}
-   "audio" {"content" b64audio}})
+   "audio" {"content" audio-base64}})
 
-(defn call-speech-api [b64audio]
-  (println b64audio)
+(defn call-speech-api [audio-base64]
   @(http/post "https://speech.googleapis.com/v1/speech:recognize"
      { :query-params {"key" (env :google-api-key)}
        :headers {"Content-Type" "application/json"}
-       :body (json/write-str (request-body b64audio))
+       :body (json/write-str (request-body audio-base64))
        :insecure? true}))
 
 
 (defn handle-speech-response [{:keys [status headers body error]}]
   (if (= status 200)
-      (println (str status "-" headers "-" body "-" error))
-        ;(json/read-str body :key-fn keyword
-        ;  :responses
-        ;  first)
-      (println body)))
-
+      (let [result (first (get-in (json/read-str body :key-fn keyword) [:results]))]
+        (get-in (first (get-in result [:alternatives])) [:transcript]))))
 
 (defn analyze [url]
-  (-> (->stream (download-audio url) decode (write "~/test.wav")))
-  (-> (println (download-audio url))
-      audio-to-b64
-      call-speech-api
-      handle-speech-response))
-
-;;IMPORTANT: code works so far, but response empty. need to convert audio from
-;;mp4(aac) to valid format(best linear16(wav))!!!
-;;(see https://cloud.google.com/speech/reference/rest/v1/RecognitionConfig#AudioEncoding)
+  (let [output (first (str/split (last (str/split url #"/")) #"\."))
+        filepath (str "audio-files/" output ".wav")]
+    (ffmpeg/ffmpeg! :i url :loglevel "panic" :acodec "pcm_s16le" :ac 1 :ar 32000 filepath)
+    (-> (bs/to-byte-array (java.io.File. filepath))
+        audio-to-b64
+        call-speech-api
+        handle-speech-response)))
