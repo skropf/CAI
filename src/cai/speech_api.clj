@@ -29,7 +29,7 @@
 (defn handle-speech-response [{:keys [status headers body error]}]
   (if (= status 200)
       (let [result (first (get-in (json/read-str body :key-fn keyword) [:results]))]
-        (get-in (first (get-in result [:alternatives])) [:transcript]))))
+        (str (get-in (first (get-in result [:alternatives])) [:transcript])))))
 
 (defn analyze [url]
   (let [output (first (str/split (last (str/split url #"/")) #"\."))

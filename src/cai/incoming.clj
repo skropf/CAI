@@ -67,9 +67,11 @@
   (let [sender-id (get-in event [:sender :id])
         recipient-id (get-in event [:recipient :id])
         time-of-message (get-in event [:timestamp])
-        attachments (get-in event [:message :attachments])]
-    (doseq [attachment attachments]
+        attachments (get-in event [:message :attachments])
+        attachment (first attachments)]
+    (let [type (get-in attachment [:type])
+          url (get-in attachment [:payload :url])]
       (cond
-        (= (get-in attachment [:type]) "audio") (outgoing/reply-to-audio (get-in attachment [:payload :url]))
-        (= (get-in attachment [:type]) "image") (outgoing/send-image (get-in attachment [:payload :url]))
-        (= (get-in attachment [:type]) "video") (outgoing/echo (get-in attachment [:payload :url]))))))
+        (= type "audio") (outgoing/reply-to-audio url)
+        (= type "image") (outgoing/send-image url)
+        (= type "video") (outgoing/echo url)))))

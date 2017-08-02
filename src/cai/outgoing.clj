@@ -1,7 +1,8 @@
 (ns cai.outgoing
   (:gen-class)
   (:require [fb-messenger.templates :as templates]
-            [cai.speech-api :as speech-api]))
+            [cai.speech-api :as speech-api]
+            [cai.cleverbot :as cleverbot]))
 
 
 
@@ -108,7 +109,8 @@
    {:message (templates/generic-template (shuffle lemmings-bots))}])
 
 (defn reply-to-audio [url]
-  [{:action "typing_on"}]
-  (let [reply (speech-api/analyze url)]
-    (println (str "###ANALYZED AUDIO: " reply))
-    [{:message (templates/text-message reply)}]))
+  (let [reply (speech-api/analyze url)
+        {:strs [cs clever_output]} (cleverbot/get-cleverbot-answer reply "")]
+    [{:action "typing_on"}
+     {:message (templates/text-message (str "Analyzed Audio: " reply))}
+     {:message (templates/text-message (str "Answer: " clever_output))}]))
