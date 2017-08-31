@@ -109,8 +109,8 @@
    {:message (templates/generic-template (shuffle lemmings-bots))}])
 
 (defn reply-to-audio [url]
-  (let [reply (speech-api/analyze url)
+  (let [reply (speech-api/stt url)
         {:strs [cs clever_output]} (cleverbot/get-cleverbot-answer reply "")]
     [{:action "typing_on"}
-     {:message (templates/text-message (str "Analyzed Audio: " reply))}
-     {:message (templates/text-message (str "Answer: " clever_output))}]))
+     ;{:message (templates/text-message (str "Analyzed Audio: " reply))}
+     {:message (templates/text-message clever_output)}]))
