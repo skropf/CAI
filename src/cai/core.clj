@@ -19,9 +19,7 @@
             [clojure.future :refer :all]
             [fb-messenger.send :as facebook]
             [cai.incoming :refer [on-quick-reply on-attachments
-                                               on-message on-postback]]
-            [cai.outgoing :as out]))
-            ;;[google-cloud :as google]))
+                                               on-message on-postback]]))
 
 (fb-messenger.send/set-page-access-token! (env :page-access-token))
 (fb-messenger.auth/set-token! (env :verify-token))
@@ -93,14 +91,7 @@
         (throw (ex-info "You have provided an invalid pattern in your reply."
                         {:causes reply}))))))
 
-; SERVER
-(defn splash []
-  {:status 200
-   :headers {"Content-Type" "text/plain"}
-   :body "Hello Lemming :)"})
-
 (defroutes fb-routes
-  (GET  "/"        [] (splash))
   (POST "/webhook" request
     (async/go
        (try

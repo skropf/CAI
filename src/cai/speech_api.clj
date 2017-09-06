@@ -38,21 +38,8 @@
         audio-to-b64
         call-speech-api
         handle-speech-response)))
-    ;(println (audio-to-b64 (bs/to-byte-array (java.io.File. filepath))))
-    ;(println (audio-to-b64 (bs/to-byte-array (java.io.File. (ffmpeg/ffmpeg! :i "audio-files/rec.mp4" :loglevel "panic" :ac 1 :ar 32000 :f "wav" "pipe:1")))))
-    ;(spit "111.wav" (ffmpeg/ffmpeg! :i (str url) :loglevel "panic" :ac 1 :ar 32000 :f "wav" "pipe:1"))))
-    ;(-> (base64/encode (ffmpeg/ffmpeg! :i url :loglevel "panic" :ac 1 :ar 32000 :f "wav" "pipe:1") "UTF-8"))))
-        ;bs/to-byte-array
-        ;println
-        ;audio-to-b64
-        ;println
-        ;call-speech-api
-        ;handle-speech-response)))
-        ;(-> (bs/to-byte-array (java.io.File. filepath))
-    ;    audio-to-b64
-  ;      call-speech-api
-  ;      handle-speech-response))
 
 ;text-to-speech
-(defn tts [text]
-  (let [url (str "http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=" text "&tl=en")]))
+;not used right now
+;(defn tts [text]
+;  (let [url (str "http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=" text "&tl=en")]))
