@@ -1,15 +1,20 @@
 # CAI (Conversational Audio Interface)
 
-Still in heavy development!
+First stable version 0.1.0
 
 ### What works
-For now speech-to-text conversion works via Google Speech API.
 
-Some standard replies/functions are still in codebase from https://github.com/lemmings-io/02-facebook-example.
++ Video/Audio to wav conversion. (via ffmpeg-wrapper)
+
++ Speech-to-text conversion via Google Speech API.
+
++ conversation with cleverbot
 
 ### Goals
-	- Bot with which you can converse via audio/text.
-	- Answers any kind of question (integration of Google Assistant via gRPC).
+
+	+ Bot with which you can converse via audio/text.
+
+	- Interaction with Google Assistant via gRPC.
 
 ### (Probably) Useful links
 

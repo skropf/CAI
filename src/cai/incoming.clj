@@ -22,7 +22,7 @@
         recipient-id (get-in event [:recipient :id])
         time-of-message (get-in event [:timestamp])
         message (get-in event [:message :text])]
-    (outgoing/reply sender-id "text" message)))
+    (outgoing/reply-to-text sender-id message)))
 
 
 (defn on-quick-reply [event]
@@ -50,4 +50,7 @@
         attachment (first attachments)
         type (get-in attachment [:type])
         url (get-in attachment [:payload :url])]
-    (outgoing/reply sender-id type url)))
+    (cond
+      (= type "image") (outgoing/reply-to-image sender-id url)
+      (= type "audio") (outgoing/reply-to-audio-or-video sender-id url)
+      (= type "video") (outgoing/reply-to-audio-or-video sender-id url))))
