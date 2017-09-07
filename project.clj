@@ -13,6 +13,7 @@
                  [http-kit "2.3.0-alpha2"]
                  [ring/ring-defaults "0.2.1"]
                  [ring/ring-json "0.4.0"]
+                 [ffmpeg-clj "2.0.2"]
                  [byte-streams "0.2.3"]
                  [ring/ring-jetty-adapter "1.5.0"]
                  [clj-time "0.14.0"]
