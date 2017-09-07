@@ -40,6 +40,7 @@
        {:message (templates/image-message url)}
        {:message (templates/text-message url)})]))
 
+  
 (defn reply-to-audio-or-video [sender-id url]
   (let [text (speech-api/stt url)
         cs-old (get-in @user-map [(keyword sender-id) :cs])
