@@ -31,7 +31,6 @@
         parseddate (timef/unparse (timef/formatter "YYYY-MM-dd") date)
         {:strs [title explanation hdurl url]} (json/read-str (get-in (client/get (str "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=" parseddate)) [:body]))
         sentences (str/split explanation #"\.")]
-
     [{:action "typing_on"}
      {:message (templates/text-message (str "APOD @" parseddate))}
      {:action "typing_on"}
@@ -40,7 +39,6 @@
      (if (str/includes? (str url) ".jpg")
        {:message (templates/image-message url)}
        {:message (templates/text-message url)})]))
-
 
 (defn reply-to-audio-or-video [sender-id url]
   (let [text (speech-api/stt url)
