@@ -25,7 +25,6 @@
     [{:action "typing_on"}
      {:message (templates/text-message clever_output)}]))
 
-
 (defn reply-to-image [sender-id image-url]
   (let [days (mod (reduce + (map #(int %) (seq image-url))) (* 3 365))
         date (time/minus (time/now) (time/days days))
@@ -40,7 +39,6 @@
      (if (str/includes? (str url) ".jpg")
        {:message (templates/image-message url)}
        {:message (templates/text-message url)})]))
-
 
 (defn reply-to-audio-or-video [sender-id url]
   (let [text (speech-api/stt url)
