@@ -29,8 +29,8 @@
   (let [days (mod (reduce + (map #(int %) (seq image-url))) (* 3 365))
         date (time/minus (time/now) (time/days days))
         parseddate (timef/unparse (timef/formatter "YYYY-MM-dd") date)
-        {:strs [title explanation hdurl url]} (json/read-str (get-in (client/get (str "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=" parseddate)) [:body]))
-        sentences (str/split explanation #"\.")]
+        {:strs [title explanation hdurl url]} (json/read-str (get-in (client/get (str "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=" parseddate)) [:body]))]
+        ;sentences (str/split explanation #"\.")]
     [{:action "typing_on"}
      {:message (templates/text-message (str "APOD @" parseddate))}
      {:action "typing_on"}
@@ -40,7 +40,7 @@
        {:message (templates/image-message url)}
        {:message (templates/text-message url)})]))
 
-  
+
 (defn reply-to-audio-or-video [sender-id url]
   (let [text (speech-api/stt url)
         cs-old (get-in @user-map [(keyword sender-id) :cs])
