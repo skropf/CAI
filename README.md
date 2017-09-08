@@ -10,6 +10,8 @@ First stable version 0.1.0
 
 + conversation with cleverbot
 
++ nasa's apod
+
 ### Goals
 
 	+ Bot with which you can converse via audio/text.
